@@ -1,25 +1,29 @@
-function getRandomNumber(min, max) {
-  if(min<0||max<0) {
-    return 0;
-  } else if ((max-min)<0){
-    const mem = max;
-    max = min;
-    min = mem;
-  }
-  return Math.round(Math.random()*(max-min))+min;
+function getLessNumber(from, to) {
+  return Math.min(Math.abs(from), Math.abs(to));
 }
 
-getRandomNumber(17,15);
+function getUpperNumber(from, to) {
+  return Math.max(Math.abs(from), Math.abs(to));
+}
 
-function getRandomLocation(min, max, digit) {
-  if(min<0||max<0) {
-    return 0;
-  } else if ((max-min)<0){
-    const mem = max;
-    max = min;
-    min = mem;
+function getRandomNumber(from, to) {
+  const lower = getLessNumber(from, to);
+  const upper = getUpperNumber(from, to);
+  if (lower === upper) {
+    return upper;
   }
-  return Math.round((Math.random()*(max-min)+min)*(10**digit))/(10**digit);
+  return Math.floor(Math.random() * (upper - lower + 1) + lower);
+}
+
+getRandomNumber(17, 15);
+
+function getRandomLocation(from, to, digit) {
+  const lower = getLessNumber(from, to);
+  const upper = getUpperNumber(from, to);
+  if (lower === upper) {
+    return upper;
+  }
+  return Math.round((Math.random() * (upper - lower) + lower) * (10 ** digit)) / (10 ** digit);
 }
 
 getRandomLocation(1, 5, 2);
