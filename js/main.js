@@ -1,3 +1,3 @@
-import {odjectDataArray} from './data.js';
+import  './card.js';
 
-odjectDataArray();
+
