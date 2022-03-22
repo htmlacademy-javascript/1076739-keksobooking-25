@@ -13,13 +13,13 @@ const TITLES = [
   'Квартира с видом на зоопарк'
 ];
 
-const TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-  'hotel'
-];
+export const TYPES = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalow': 'Бунгало',
+  'hotel': 'Отель'
+};
 
 const TIMES = [
   '12.00',
@@ -62,7 +62,7 @@ const generateFakeData = (value, index) => {
       title: getRandomArrayElements(TITLES),
       address: `${lat}, ${lng}`,
       price: getRandomNumber(100, 15000),
-      type: getRandomArrayElements(TYPES),
+      type: getRandomArrayElements(Object.keys(TYPES)),
       rooms: getRandomNumber(1, 4),
       guests: getRandomNumber(1, 5),
       checkin: getRandomArrayElements(TIMES),
@@ -78,6 +78,7 @@ const generateFakeData = (value, index) => {
   };
 };
 
-const odjectDataArray = () => Array.from({ length: 10 }, generateFakeData);
+const generateOdjectDataArray = () => Array.from({ length: 10 }, generateFakeData);
 
-export { odjectDataArray };
+
+export {generateOdjectDataArray };
