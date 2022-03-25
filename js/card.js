@@ -15,9 +15,9 @@ const createFeatures = (parentList, userFeatures) => {
   });
 };
 
-const createPhotos = (parentList, photosSrc) => {
+const createPhotos = (parentList, photoSources) => {
   parentList.innerHTML = '';
-  photosSrc.forEach((photoSrc) => {
+  photoSources.forEach((photoSrc) => {
     const photoElement = document.createElement('img');
     photoElement.width = 45;
     photoElement.height = 40;
@@ -28,14 +28,9 @@ const createPhotos = (parentList, photosSrc) => {
   });
 };
 
-const fillElement = (element, content, ...parts) => {
+const fillElement = (element, content) => {
   if (content) {
     element.textContent = content;
-    if (parts) {
-      parts.forEach((part) => {
-        element.textContent += part;
-      });
-    }
   } else {
     element.remove();
   }
@@ -48,11 +43,19 @@ cardsDataArray.forEach((cards) => {
 
   fillElement(newCard.querySelector('.popup__text--address'), cards.offer.address);
 
-  fillElement(newCard.querySelector('.popup__text--price'), cards.offer.price, ' ₽/', 'ночь');
+  if (cards.offer.price) {
+    newCard.querySelector('.popup__text--price').textContent = `${cards.offer.price} ₽/ ночь`;
+  } else {
+    newCard.querySelector('.popup__text--price').remove();
+  }
 
   fillElement(newCard.querySelector('.popup__type'), TYPES[cards.offer.type]);
 
-  fillElement(newCard.querySelector('.popup__text--capacity'), cards.offer.rooms, ' комнаты для ', cards.offer.guests, ' гостей');
+  if (cards.offer.rooms && cards.offer.guests) {
+    newCard.querySelector('.popup__text--capacity').textContent = `${cards.offer.rooms} комнаты для ${cards.offer.guests} гостей`;
+  } else {
+    newCard.querySelector('.popup__text--capacity').remove();
+  }
 
   if (cards.offer.checkin && cards.offer.checkout) {
     newCard.querySelector('.popup__text--time').textContent = `Заезд после ${cards.offer.checkin}, выезд до ${cards.offer.checkout}`;
