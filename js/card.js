@@ -29,7 +29,7 @@ const createPhotos = (parentList, photoSources) => {
 };
 
 const fillElement = (element, content) => {
-  if (content) {
+  if (content && !content.includes(undefined)) {
     element.textContent = content;
   } else {
     element.remove();
@@ -43,25 +43,13 @@ cardsDataArray.forEach((cards) => {
 
   fillElement(newCard.querySelector('.popup__text--address'), cards.offer.address);
 
-  if (cards.offer.price) {
-    newCard.querySelector('.popup__text--price').textContent = `${cards.offer.price} ₽/ ночь`;
-  } else {
-    newCard.querySelector('.popup__text--price').remove();
-  }
+  fillElement(newCard.querySelector('.popup__text--price'), `${cards.offer.price} ₽/ ночь`);
 
   fillElement(newCard.querySelector('.popup__type'), TYPES[cards.offer.type]);
 
-  if (cards.offer.rooms && cards.offer.guests) {
-    newCard.querySelector('.popup__text--capacity').textContent = `${cards.offer.rooms} комнаты для ${cards.offer.guests} гостей`;
-  } else {
-    newCard.querySelector('.popup__text--capacity').remove();
-  }
+  fillElement(newCard.querySelector('.popup__text--capacity'), `${cards.offer.rooms} комнаты для ${cards.offer.guests} гостей`);
 
-  if (cards.offer.checkin && cards.offer.checkout) {
-    newCard.querySelector('.popup__text--time').textContent = `Заезд после ${cards.offer.checkin}, выезд до ${cards.offer.checkout}`;
-  } else {
-    newCard.querySelector('.popup__text--time').remove();
-  }
+  fillElement(newCard.querySelector('.popup__text--time'), `Заезд после ${cards.offer.checkin}, выезд до ${cards.offer.checkout}`);
 
   if (cards.offer.description) {
     createFeatures(newCard.querySelector('.popup__features'), cards.offer.features);

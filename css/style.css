@@ -1037,6 +1037,6 @@ fieldset {
   color: red;
 }
 
-.ad-form__title--invalid input{
+.ad-form__title--invalid input:not(:focus) {
   background-color: rgb(241, 171, 171);
 }
