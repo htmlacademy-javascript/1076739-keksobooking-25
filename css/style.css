@@ -1028,3 +1028,15 @@ fieldset {
 .hidden {
   display: none;
 }
+
+/*Стили для ошибок*/
+
+.ad-form__error {
+  font-size: 15px;
+  display: block;
+  color: red;
+}
+
+.ad-form__title--invalid input:not(:focus) {
+  background-color: rgb(241, 171, 171);
+}

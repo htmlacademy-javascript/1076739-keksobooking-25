@@ -81,4 +81,4 @@ const generateFakeData = (value, index) => {
 const generateOdjectDataArray = () => Array.from({ length: 10 }, generateFakeData);
 
 
-export {generateOdjectDataArray };
+export { generateOdjectDataArray };
