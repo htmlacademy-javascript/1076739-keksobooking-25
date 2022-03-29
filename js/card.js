@@ -2,7 +2,6 @@ import { generateOdjectDataArray, TYPES } from './data.js';
 
 const cardsDataArray = generateOdjectDataArray();
 const cardTemplate = document.querySelector('#card').content.querySelector('article');
-const mapCanvas = document.querySelector('#map-canvas');
 const cardListFragment = document.createDocumentFragment();
 
 const createFeatures = (parentList, userFeatures) => {
@@ -36,42 +35,44 @@ const fillElement = (element, content) => {
   }
 };
 
-cardsDataArray.forEach((cards) => {
+const createPinPopup = (card) => {
   const newCard = cardTemplate.cloneNode(true);
 
-  fillElement(newCard.querySelector('.popup__title'), cards.offer.title);
+  fillElement(newCard.querySelector('.popup__title'), card.offer.title);
 
-  fillElement(newCard.querySelector('.popup__text--address'), cards.offer.address);
+  fillElement(newCard.querySelector('.popup__text--address'), card.offer.address);
 
-  fillElement(newCard.querySelector('.popup__text--price'), `${cards.offer.price} ₽/ ночь`);
+  fillElement(newCard.querySelector('.popup__text--price'), `${card.offer.price} ₽/ ночь`);
 
-  fillElement(newCard.querySelector('.popup__type'), TYPES[cards.offer.type]);
+  fillElement(newCard.querySelector('.popup__type'), TYPES[card.offer.type]);
 
-  fillElement(newCard.querySelector('.popup__text--capacity'), `${cards.offer.rooms} комнаты для ${cards.offer.guests} гостей`);
+  fillElement(newCard.querySelector('.popup__text--capacity'), `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
 
-  fillElement(newCard.querySelector('.popup__text--time'), `Заезд после ${cards.offer.checkin}, выезд до ${cards.offer.checkout}`);
+  fillElement(newCard.querySelector('.popup__text--time'), `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
 
-  if (cards.offer.description) {
-    createFeatures(newCard.querySelector('.popup__features'), cards.offer.features);
+  if (card.offer.description) {
+    createFeatures(newCard.querySelector('.popup__features'), card.offer.features);
   } else {
     newCard.querySelectorAll('.popup__feature').remove();
   }
 
-  fillElement(newCard.querySelector('.popup__description'), cards.offer.description);
+  fillElement(newCard.querySelector('.popup__description'), card.offer.description);
 
-  if (cards.offer.photos) {
-    createPhotos(newCard.querySelector('.popup__photos'), cards.offer.photos);
+  if (card.offer.photos) {
+    createPhotos(newCard.querySelector('.popup__photos'), card.offer.photos);
   } else {
     newCard.querySelector('.popup__photos').remove();
   }
 
-  if (cards.author.avatar) {
-    newCard.querySelector('.popup__avatar').src = cards.author.avatar;
+  if (card.author.avatar) {
+    newCard.querySelector('.popup__avatar').src = card.author.avatar;
   } else {
     newCard.querySelector('.popup__avatar').remove();
   }
 
   cardListFragment.appendChild(newCard);
-});
+  return newCard;
+};
 
-mapCanvas.appendChild(cardListFragment.querySelectorAll('article')[0]);
+
+export { cardsDataArray, createPinPopup };
