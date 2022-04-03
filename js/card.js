@@ -2,7 +2,6 @@ import { generateOdjectDataArray, TYPES } from './data.js';
 
 const cardsDataArray = generateOdjectDataArray();
 const cardTemplate = document.querySelector('#card').content.querySelector('article');
-const cardListFragment = document.createDocumentFragment();
 
 const createFeatures = (parentList, userFeatures) => {
   parentList.innerHTML = '';
@@ -28,14 +27,14 @@ const createPhotos = (parentList, photoSources) => {
 };
 
 const fillElement = (element, content) => {
-  if (content && !content.includes(undefined)) {
+  if (content && !content.toString().includes(undefined)) {
     element.textContent = content;
   } else {
     element.remove();
   }
 };
 
-const createPinPopup = (card) => {
+const createCard = (card) => {
   const newCard = cardTemplate.cloneNode(true);
 
   fillElement(newCard.querySelector('.popup__title'), card.offer.title);
@@ -44,7 +43,7 @@ const createPinPopup = (card) => {
 
   fillElement(newCard.querySelector('.popup__text--price'), `${card.offer.price} ₽/ ночь`);
 
-  fillElement(newCard.querySelector('.popup__type'), TYPES[card.offer.type]);
+  fillElement(newCard.querySelector('.popup__type'), TYPES[card.offer.type].name);
 
   fillElement(newCard.querySelector('.popup__text--capacity'), `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
 
@@ -69,10 +68,8 @@ const createPinPopup = (card) => {
   } else {
     newCard.querySelector('.popup__avatar').remove();
   }
-
-  cardListFragment.appendChild(newCard);
   return newCard;
 };
 
 
-export { cardsDataArray, createPinPopup };
+export { cardsDataArray, createCard };

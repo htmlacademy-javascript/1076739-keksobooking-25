@@ -1,4 +1,4 @@
-import { priceElement } from './form.js';
+
 
 const sliderElement = document.querySelector('.ad-form__slider');
 
@@ -20,13 +20,4 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-sliderElement.noUiSlider.on('update', () => {
-  if (sliderElement.noUiSlider.get() > 0) {
-    priceElement.value = sliderElement.noUiSlider.get();
-  }
-
-});
-
-priceElement.addEventListener('change', (evt) => {
-  sliderElement.noUiSlider.set(evt.target.value);
-});
+export { sliderElement };

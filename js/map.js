@@ -1,40 +1,14 @@
-import { formElement } from './form.js';
-import { cardsDataArray, createPinPopup } from './card.js';
 
-const fieldsetElements = document.querySelectorAll('.ad-form__element');
-const mapFormFiltersElement = document.querySelector('.map__filters');
-const mapFiltersElement = mapFormFiltersElement.querySelectorAll('.map__filter');
-const adressElement = document.querySelector('#address');
+import { cardsDataArray, createCard } from './card.js';
+import { COORDINATE_POINTS, PIN_SIZE, MAIN_PIN_SIZE, PIN_RATIO } from './data.js';
+let isMapLoading = false;
 
-const makeMapInactive = () => {
-  formElement.classList.add('ad-form--disabled');
-  mapFormFiltersElement.classList.add('map__filters--disabled');
-  fieldsetElements.forEach((fieldset) => {
-    fieldset.setAttribute('disabled', 'disabled');
-  });
-  mapFiltersElement.forEach((filter) => {
-    filter.setAttribute('disabled', 'disabled');
-  });
-};
-
-makeMapInactive();
-
-const makeMapActive = () => {
-  formElement.classList.remove('ad-form--disabled');
-  mapFormFiltersElement.classList.remove('map__filters--disabled');
-  fieldsetElements.forEach((fieldset) => {
-    fieldset.removeAttribute('disabled', 'disabled');
-  });
-  mapFiltersElement.forEach((filter) => {
-    filter.removeAttribute('disabled', 'disabled');
-  });
-};
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    makeMapActive();
+    isMapLoading = true;
   })
-  .setView({ lat: 35.6817, lng: 139.7539 }, 13);
+  .setView(COORDINATE_POINTS, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -43,62 +17,55 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const mainPinIcon = L.icon({
-  iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
-});
-
-
-const mainMarker = L.marker(
-  {
-    lat: 35.6817,
-    lng: 139.7539,
-  },
-  {
-    draggable: true,
-    icon: mainPinIcon,
-  },
-);
-
-adressElement.value = `${mainMarker.getLatLng().lat}:${mainMarker.getLatLng().lng}`;
-
-mainMarker.addTo(map);
-
-const getPinAdress = (evt) => {
-  const adressLat = evt.target.getLatLng().lat;
-  const adresslng = evt.target.getLatLng().lng;
-  adressElement.value = `${adressLat.toFixed(5)}:${adresslng.toFixed(5)}`;
+const createIcon = (size, urlIcon) => {
+  const markerIcon = L.icon({
+    iconUrl: urlIcon,
+    iconSize: [size, size],
+    iconAnchor: [size * PIN_RATIO, size],
+  });
+  return markerIcon;
 };
 
-mainMarker.on('moveend', (evt) => {
-  getPinAdress(evt);
-});
-
-const icon = L.icon({
-  iconUrl: './img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
-
-const createMarker = (card) => {
-  const { lat, lng } = card.location;
-  const marker = L.marker(
+const createMarker = ({ lat, lng }, icon, draggable) => {
+  const newMarker = L.marker(
     {
       lat,
-      lng,
+      lng
     },
     {
-      icon,
+      draggable,
+      icon
     },
   );
+  return newMarker;
+};
+
+const mainMarker = createMarker(COORDINATE_POINTS, createIcon(MAIN_PIN_SIZE, './img/main-pin.svg'), true);
+mainMarker.addTo(map);
+
+const getStingCoordinate = ({ lat, lng }) => `${lat.toFixed(5)} ,${lng.toFixed(5)}`;
+
+const getPinAdress = (evt, element) => {
+  element.value = getStingCoordinate(evt.target.getLatLng());
+};
+
+export const onMarkerMoveed = (element) => {
+  mainMarker.on('moveend', (evt) => {
+    getPinAdress(evt, element);
+  });
+};
+
+const createMarkers = (card) => {
+  const icon = createIcon(PIN_SIZE, './img/pin.svg');
+  const marker = createMarker(card.location, icon, false);
 
   marker
     .addTo(map)
-    .bindPopup(createPinPopup(card));
+    .bindPopup(createCard(card));
 };
 
 cardsDataArray.forEach((card) => {
-  createMarker(card);
+  createMarkers(card);
 });
+
+export { map, isMapLoading };
