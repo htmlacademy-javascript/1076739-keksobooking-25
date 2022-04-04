@@ -26,4 +26,12 @@ const getRandomArrayElements = (elements) => elements[getRandomNumber(0, element
 
 const getMyltipleArrayElements = (elements) => elements.slice(0, getRandomNumber(1, elements.length));
 
+export const togglePage = (isLoad, form, formElements, className) => {
+  const classMethod = (isLoad) ? 'remove' : 'add';
+  form.classList[classMethod](className);
+  formElements.forEach((element) => {
+    element.disabled = !isLoad;
+  });
+};
+
 export { getRandomNumber, getRandomLocation, getNumberWithLeadZero, getRandomArrayElements, getMyltipleArrayElements };

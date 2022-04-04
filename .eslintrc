@@ -13,6 +13,7 @@ globals:
   L: readonly
   noUiSlider: readonly
   Pristine: readonly
+  window.declineOfNumeral: readonly
 
 extends:
   "htmlacademy/vanilla"

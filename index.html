@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="leaflet/leaflet.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кексобукинг</title>
 </head>
@@ -105,7 +107,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" readonly>
+          <input id="address" name="address" type="text" value ="35.68948, 139.69235" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -119,9 +121,8 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__price">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="5000" max="100000" min="5000" required 
-            data-pristine-min-message="Цена за ночь не может быть больше 100 000 или меньше 5000"
-            data-pristine-max-message="Цена за ночь не может быть больше 100 000 или меньше 5000"
+          <input id="price" name="price" type="number" placeholder="5000" max="100000" min="0" required 
+            
             data-pristine-required-message="Введите число">
           <div class="ad-form__slider"></div>
         </fieldset>
@@ -260,8 +261,10 @@
     </div>
   </template>
   <script src="pristine/pristine.min.js"></script>
+  <script src="leaflet/leaflet.js"></script>
+  <script src="decline-of-numeral/decline-of-numeral.min.js"></script>
+  <script src="nouislider/nouislider.js"></script>
   <script src="js/main.js" type="module"></script>
-  <script src="https://cdn.jsdelivr.net/npm/decline-of-numeral/dist/lib/decline-of-numeral.js"></script>
 </body>
 
 </html>
