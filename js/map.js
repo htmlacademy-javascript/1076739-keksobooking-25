@@ -1,7 +1,7 @@
 
-import { cardsDataArray, createCard } from './card.js';
+import { createCard } from './card.js';
 import { COORDINATE_POINTS, PIN_SIZE, MAIN_PIN_SIZE, PIN_RATIO } from './data.js';
-let isMapLoading = false;
+let isMapLoading;
 
 
 const map = L.map('map-canvas')
@@ -55,17 +55,34 @@ export const onMarkerMoveed = (element) => {
   });
 };
 
-const createMarkers = (card) => {
-  const icon = createIcon(PIN_SIZE, './img/pin.svg');
-  const marker = createMarker(card.location, icon, false);
+const markerGroup = L.layerGroup().addTo(map);
 
-  marker
-    .addTo(map)
-    .bindPopup(createCard(card));
+const createMarkers = (cards) => {
+  markerGroup.clearLayers();
+  const icon = createIcon(PIN_SIZE, './img/pin.svg');
+  cards.forEach((card) => {
+    const marker = createMarker(card.location, icon, false);
+    marker
+      .addTo(markerGroup)
+      .bindPopup(createCard(card));
+  });
+
 };
 
-cardsDataArray.forEach((card) => {
-  createMarkers(card);
-});
+const removePopUp = () => {
+  const popUp = document.querySelectorAll('.leaflet-popup');
+  popUp.forEach((popup) => {
+    if (popup) {
+      popup.remove();
+    }
+  });
+};
 
-export { map, isMapLoading };
+const getDefaultValuesMap = () => {
+  map.setView(COORDINATE_POINTS, 13);
+  mainMarker.setLatLng(
+    COORDINATE_POINTS
+  );
+};
+
+export { map, isMapLoading, createMarkers, removePopUp, getDefaultValuesMap };

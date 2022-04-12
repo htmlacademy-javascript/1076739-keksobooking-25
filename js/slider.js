@@ -20,4 +20,17 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-export { sliderElement };
+const slider = sliderElement.noUiSlider;
+
+const getDefaultValuesSlider = () => {
+  slider.updateOptions({
+    range: {
+      min: 0,
+      max: 100000
+    },
+    start: 0,
+    step: 1
+  });
+};
+
+export { slider,  getDefaultValuesSlider};

@@ -1,6 +1,6 @@
-import { generateOdjectDataArray, TYPES } from './data.js';
+import {  TYPES } from './data.js';
 
-const cardsDataArray = generateOdjectDataArray();
+
 const cardTemplate = document.querySelector('#card').content.querySelector('article');
 
 const createFeatures = (parentList, userFeatures) => {
@@ -49,10 +49,10 @@ const createCard = (card) => {
 
   fillElement(newCard.querySelector('.popup__text--time'), `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
 
-  if (card.offer.description) {
+  if (card.offer.features) {
     createFeatures(newCard.querySelector('.popup__features'), card.offer.features);
   } else {
-    newCard.querySelectorAll('.popup__feature').remove();
+    newCard.querySelector('.popup__features').remove();
   }
 
   fillElement(newCard.querySelector('.popup__description'), card.offer.description);
@@ -72,4 +72,4 @@ const createCard = (card) => {
 };
 
 
-export { cardsDataArray, createCard };
+export {  createCard };
