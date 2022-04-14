@@ -52,7 +52,7 @@ priceElement.addEventListener('keydown', (e) => {
   }
 });
 
-const minPrice = () => TYPES[typeFieldElement.value].minPrice;
+const setMinPrice = () => TYPES[typeFieldElement.value].minPrice;
 
 const setAttribute = () => {
   const priceValue = TYPES[typeFieldElement.value].minPrice;
@@ -65,10 +65,10 @@ setAttribute();
 const setPriceRange = () => {
   slider.updateOptions({
     range: {
-      min: minPrice(),
+      min: setMinPrice(),
       max: MAX_PRICE,
     },
-    start: minPrice()
+    start: setMinPrice()
   });
 };
 
