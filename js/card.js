@@ -1,5 +1,4 @@
-import {  TYPES } from './data.js';
-
+import { TYPES } from './data.js';
 
 const cardTemplate = document.querySelector('#card').content.querySelector('article');
 
@@ -71,5 +70,4 @@ const createCard = (card) => {
   return newCard;
 };
 
-
-export {  createCard };
+export { createCard };

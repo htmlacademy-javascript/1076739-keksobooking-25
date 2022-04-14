@@ -3,7 +3,6 @@ import { createCard } from './card.js';
 import { COORDINATE_POINTS, PIN_SIZE, MAIN_PIN_SIZE, PIN_RATIO } from './data.js';
 let isMapLoading;
 
-
 const map = L.map('map-canvas')
   .on('load', () => {
     isMapLoading = true;
@@ -49,7 +48,7 @@ const getPinAdress = (evt, element) => {
   element.value = getStingCoordinate(evt.target.getLatLng());
 };
 
-export const onMarkerMoveed = (element) => {
+export const chooseAddress = (element) => {
   mainMarker.on('moveend', (evt) => {
     getPinAdress(evt, element);
   });
@@ -66,7 +65,6 @@ const createMarkers = (cards) => {
       .addTo(markerGroup)
       .bindPopup(createCard(card));
   });
-
 };
 
 const removePopUp = () => {
