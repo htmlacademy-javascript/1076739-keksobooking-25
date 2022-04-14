@@ -30,4 +30,13 @@ export const TYPES = {
   }
 };
 
-export {  COORDINATE_POINTS, PIN_SIZE, MAIN_PIN_SIZE, PIN_RATIO };
+const roomCapacity = {
+  '100': ['0'],
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3']
+};
+
+const roomsDeclinations = ['комната', 'комнаты', 'комнат'];
+
+export { COORDINATE_POINTS, PIN_SIZE, MAIN_PIN_SIZE, PIN_RATIO, roomCapacity, roomsDeclinations };

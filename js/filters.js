@@ -17,7 +17,6 @@ const valueFilterPrice = {
   'high': [50000, Infinity]
 };
 
-
 const compareFeatures = () => {
   const featuresCheckbox = [];
   mapFilterFeaturesElement.forEach((element) => {
@@ -27,7 +26,6 @@ const compareFeatures = () => {
   });
   return featuresCheckbox;
 };
-
 
 const compareFilters = (data) => {
   const newData = data.slice()
@@ -47,8 +45,7 @@ const compareFilters = (data) => {
   return newData;
 };
 
-
-const onChangeFiter = (data, filterName, cb) => {
+const changeFiter = (data, filterName, cb) => {
   filterName.forEach((filterElement) => {
     filterElement.addEventListener('change', () => {
       cb(compareFilters(data));
@@ -56,4 +53,4 @@ const onChangeFiter = (data, filterName, cb) => {
   });
 };
 
-export { mapFiltersElement, mapFormFiltersElement, onChangeFiter, mapFilterFeaturesElement, compareFilters, clearFilter };
+export { mapFiltersElement, mapFormFiltersElement, changeFiter, mapFilterFeaturesElement, compareFilters, clearFilter };

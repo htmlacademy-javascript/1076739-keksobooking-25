@@ -1,9 +1,8 @@
-import { TYPES, COORDINATE_POINTS } from './data.js';
+import { TYPES, COORDINATE_POINTS, roomCapacity, roomsDeclinations } from './data.js';
 import { slider } from './slider.js';
-import { onMarkerMoveed } from './map.js';
+import { chooseAddress } from './map.js';
 import { showError } from './alert.js';
 import { setData } from './api-fetch.js';
-
 
 const typeFieldElement = document.querySelector('#type');
 const fieldsetElements = document.querySelectorAll('.ad-form__element');
@@ -19,16 +18,7 @@ const timeOutElement = document.querySelector('#timeout');
 const timeOutElementOptions = timeOutElement.querySelectorAll('option');
 const adFormSubmitElement = document.querySelector('.ad-form__submit');
 const adFormResetElement = document.querySelector('.ad-form__reset');
-
-const roomCapacity = {
-  '100': ['0'],
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3']
-};
-
-const roomsDeclinations = ['комната', 'комнаты', 'комнат'];
-
+const allowedKeys = [...'01234567890', 'Backspace', 'Delete'];
 
 const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
@@ -37,8 +27,7 @@ const pristine = new Pristine(formElement, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'p',
   errorTextClass: 'ad-form__error'
-}
-);
+});
 
 const getCapacityErrorMessage = () => {
   const people = (roomsElement.value === '1') ? 'гостя' : 'гостей';
@@ -56,6 +45,12 @@ roomsElement.addEventListener('change', () => {
 });
 
 // синхронизация полей цена тип
+priceElement.addEventListener('keydown', (e) => {
+  if (!allowedKeys.includes(e.key)) {
+    e.preventDefault();
+    return false;
+  }
+});
 
 const minPrice = () => TYPES[typeFieldElement.value].minPrice;
 
@@ -84,10 +79,9 @@ typeFieldElement.addEventListener('change', () => {
   setPriceRange();
   pristine.validate(priceElement);
 });
+
 // синхронизация полей времени размещения
-
-
-const onChangeSync = (fieldOne, fieldTwoOptions) => {
+const syncField = (fieldOne, fieldTwoOptions) => {
   fieldOne.addEventListener('change', () => {
     fieldTwoOptions.forEach((option) => {
       if (fieldOne.value === option.value) {
@@ -97,11 +91,10 @@ const onChangeSync = (fieldOne, fieldTwoOptions) => {
   });
 };
 
-onChangeSync(timeInElement, timeOutElementOptions);
-onChangeSync(timeOutElement, timeInElementOptions);
+syncField(timeInElement, timeOutElementOptions);
+syncField(timeOutElement, timeInElementOptions);
 
 //валидация цены взависимости от типа размещения
-
 const getPriceErrorMessage = () => `Минимальная цена для типа размещения ${TYPES[typeFieldElement.value].name} составляет ${TYPES[typeFieldElement.value].minPrice} ₽/ ночь`;
 
 const validatePriceField = () => priceElement.value >= TYPES[typeFieldElement.value].minPrice;
@@ -118,7 +111,7 @@ priceElement.addEventListener('change', () => {
 
 addressElement.value = `${COORDINATE_POINTS.lat}, ${COORDINATE_POINTS.lng}`;
 
-onMarkerMoveed(addressElement);
+chooseAddress(addressElement);
 
 const clearForm = () => {
   formElement.reset();
@@ -128,12 +121,10 @@ const clearForm = () => {
       const error = element.querySelector('.pristine-error');
       error.remove();
     }
-
   });
 };
 
-
-const onClickReset = (cb) => {
+const resetForm = (cb) => {
   adFormResetElement.addEventListener('click', () => {
     cb();
   });
@@ -150,15 +141,18 @@ const setFormSubmit = (onSuccess) => {
 
     const isValid = pristine.validate();
     if (isValid) {
-
       adFormSubmitElement.setAttribute('disabled', 'disabled');
       adFormSubmitElement.textContent = 'Сохраняю....';
       const formData = new FormData(evt.target);
 
-      setData('https://25.javascript.pages.academy/keksobooking', formData, () => onSuccess(), () => { showError(); clearSubmit(); });
+      setData('https://25.javascript.pages.academy/keksobooking',
+        formData,
+        () => onSuccess(), () => {
+          showError();
+          clearSubmit();
+        });
     }
   });
 };
 
-
-export { formElement, priceElement, fieldsetElements, clearForm, onClickReset, setFormSubmit, clearSubmit };
+export { formElement, priceElement, fieldsetElements, clearForm, resetForm, setFormSubmit, clearSubmit };

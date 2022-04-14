@@ -3,19 +3,19 @@ const successElement = document.querySelector('#success').content.querySelector(
 const errorButtonElement = errorElement.querySelector('.error__button');
 const body = document.querySelector('body');
 
-const onClickCloseMessage = (message) => {
+const removeMessageByClick = (message) => {
   document.addEventListener('click', () => {
     message.remove();
   });
 };
 
-const onButtonClick = (button, element) => {
+const removeMesssageByButton = (button, element) => {
   button.addEventListener('click', () => {
     element.remove();
   });
 };
 
-const onEscCloseMessage = (message) => {
+const removeMessageByEsc = (message) => {
   document.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       message.remove();
@@ -26,9 +26,9 @@ const onEscCloseMessage = (message) => {
 const showMessage = (template) => {
   const message = template.cloneNode(true);
   body.appendChild(message);
-  onClickCloseMessage(message);
-  onEscCloseMessage(message);
-  onButtonClick(errorButtonElement, message);
+  removeMessageByClick(message);
+  removeMessageByEsc(message);
+  removeMesssageByButton(errorButtonElement, message);
 };
 
 const showError = () => showMessage(errorElement);
