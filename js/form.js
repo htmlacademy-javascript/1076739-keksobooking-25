@@ -115,13 +115,7 @@ chooseAddress(addressElement);
 
 const clearForm = () => {
   formElement.reset();
-  fieldsetElements.forEach((element) => {
-    if (element.classList.contains('ad-form__title--invalid')) {
-      element.classList.remove('ad-form__title--invalid');
-      const error = element.querySelector('.pristine-error');
-      error.remove();
-    }
-  });
+  pristine.reset();
 };
 
 const resetForm = (cb) => {
